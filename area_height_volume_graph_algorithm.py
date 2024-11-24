@@ -150,7 +150,7 @@ class createAreaHeightVolumeGraphAlgorithm(QgsProcessingAlgorithm):
             raise QgsProcessingException(
                 'Vertical spacing must be greather than 0'
                                          )
-        
+
         featuresCount = sum(1 for _ in areaInput.getFeatures())
         if featuresCount > 1:
             raise QgsProcessingException(
@@ -186,7 +186,7 @@ class createAreaHeightVolumeGraphAlgorithm(QgsProcessingAlgorithm):
             raise QgsProcessingException(
                 'The feature is smaller than raster pixel size'
             )
-     
+
         AHV, graph = executePlugin(demLayer,
                                     areaInput,
                                     verticalSpacingInput)
