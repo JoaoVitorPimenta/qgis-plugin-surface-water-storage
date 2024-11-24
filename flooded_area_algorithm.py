@@ -180,9 +180,9 @@ class createFloodedAreaAlgorithm(QgsProcessingAlgorithm):
                                                         context
                                                         )
 
-        if verticalSpacingInput <0:
+        if verticalSpacingInput <=0:
             raise QgsProcessingException(
-                'Vertical spacing needs be positive!'
+                'Vertical spacing must be greather than 0'
                                          )
 
         featuresCount = sum(1 for _ in areaInput.getFeatures())
