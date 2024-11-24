@@ -146,9 +146,9 @@ class createAreaHeightVolumeGraphAlgorithm(QgsProcessingAlgorithm):
                                                         )
         # Compute the number of steps to display within the progress bar and
         # get features from source
-        if verticalSpacingInput <0:
+        if verticalSpacingInput <=0:
             raise QgsProcessingException(
-                'Vertical spacing needs be positive!'
+                'Vertical spacing must be greather than 0'
                                          )
         
         featuresCount = sum(1 for _ in areaInput.getFeatures())
