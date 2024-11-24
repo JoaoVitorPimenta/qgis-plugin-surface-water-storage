@@ -33,8 +33,8 @@ __revision__ = '$Format:%H$'
 import os
 from qgis.core import QgsProcessingProvider
 from qgis.PyQt.QtGui import QIcon
-from .area_height_volume_graph_algorithm import createAreaHeightVolumeGraphAlgorithm
-from .flooded_area_algorithm import createFloodedAreaAlgorithm
+from .create_area_height_volume_graph_tool import createAreaHeightVolumeGraphAlgorithm
+from .create_flooded_area_tool import createFloodedAreaAlgorithm
 
 
 
