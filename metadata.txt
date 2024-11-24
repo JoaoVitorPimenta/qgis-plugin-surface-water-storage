@@ -5,12 +5,12 @@
 [general]
 name=Surface Water Storage
 qgisMinimumVersion=3.0
-description=This plugin calculates the area flooded by water volume,height,elevation or area, and the Area-Elevation-Volume graph
+description=This plugin generates the flooded area and elevation-area-volume graph for an area.
 version=0.1
 author=João Vitor Pimenta
 email=jvpjoaopimenta@gmail.com
 
-about=This plugin aims to study surface water storage, whether through lakes, reservoirs, swimming pools, among others. It does this through two tools, so far: calculating how the stored water occupies the area (through the flooded area polygon) and calculating the quota-area-volume graph.
+about=This plugin aims to study surface water storage, for large lakes and reservoirs, among others. It does this through two tools, so far: calculating how the stored water occupies the area, based on an input parameter, which could be volume, height, elevation or area and calculating the area-volume elevation graph.
 
 tracker=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage/issues
 repository=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage
