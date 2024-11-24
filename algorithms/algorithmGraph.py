@@ -121,6 +121,6 @@ def executePlugin (dem,area,step):
     
     hypsometricCurve = generateHypsometricCurve(dem,area,step)
     areaHeightVolumeCSV = calculateAreaHeightVolume(hypsometricCurve)
-    graph = plotGraph(areaHeightVolumeCSV)
+    graph = createGraph(areaHeightVolumeCSV)
 
     return areaHeightVolumeCSV, graph
