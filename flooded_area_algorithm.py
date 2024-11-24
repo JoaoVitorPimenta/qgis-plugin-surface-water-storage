@@ -226,7 +226,7 @@ class createFloodedAreaAlgorithm(QgsProcessingAlgorithm):
                                     selectedParameter,
                                     parameterValue,
                                     verticalSpacingInput)
-     
+
         (FA, dest_idb) = self.parameterAsSink(parameters,
                                               self.FLOODED_AREA,
                                               context,
