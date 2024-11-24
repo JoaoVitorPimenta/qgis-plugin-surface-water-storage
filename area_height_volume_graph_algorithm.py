@@ -30,6 +30,7 @@ __copyright__ = '(C) 2024 by João Vitor Pimenta'
 
 __revision__ = '$Format:%H$'
 
+import os
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsProcessingAlgorithm,
@@ -40,8 +41,6 @@ from qgis.core import (QgsProcessingAlgorithm,
                        QgsProcessingParameterNumber)
 from numpy import savetxt
 from .algorithms.algorithmGraph import executePlugin
-import os
-
 
 class createAreaHeightVolumeGraphAlgorithm(QgsProcessingAlgorithm):
     """
