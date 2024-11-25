@@ -20,7 +20,7 @@ This plugin offers 2 tools to help with the study of a surface water storage, ar
 
 Create a flooded area - this tool create a vectorized flooded area from a DEM, a area and from a parameter provided by the user, which could be elevation, height, area or volume
 
-Create a graph - This tool creates an area x elevation x capacity graph, widely used to analyze how elevation relates to the area and the storable volume in the topography
+Create a graph - This tool creates an area x elevation x capacity graph, widely used to analyze how elevation relates to area and storable volume in topography, it also generates area, elevation and capacity data as a .csv file
 
 ## Recommendations 
 All layers must be in a CRS that uses meters
