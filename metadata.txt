@@ -1,0 +1,47 @@
+# This file contains metadata for your plugin.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=Surface Water Storage
+qgisMinimumVersion=3.0
+description=This plugin generates the inundation area and elevation-area-volume graph for an area.
+version=0.1
+author=João Vitor Pimenta
+email=jvpjoaopimenta@gmail.com
+
+about=This plugin aims to study surface water storage,for large lakes and reservoirs, among others. It does this through two tools: calculating how the stored water occupies the area (by generating the inundation area polygon), and calculating the area-volume-elevation relationship for the area. All layers must be in a CRS that uses meters and the DEM needs to be hydrologically consistent (no sinks).
+
+tracker=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage/issues
+repository=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage
+# End of mandatory metadata
+
+# Recommended items:
+
+hasProcessingProvider=yes
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=python,water,reservoir,lake,storage
+
+homepage=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage
+category=Analysis
+icon=icon.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
+# plugin_dependencies=GDAL, Numpy, Scipy, Plotly. 
+
+Category of the plugin: Raster, Vector, Database or Web
+# category=
+
+# If the plugin can run on QGIS Server.
+server=False
+
