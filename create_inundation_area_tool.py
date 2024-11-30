@@ -118,7 +118,7 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
                 'Parameter value',
                 type=QgsProcessingParameterNumber.Double,
                 defaultValue='',
-                maxValue=1e12
+                maxValue=float('inf')
             )
         )
 
