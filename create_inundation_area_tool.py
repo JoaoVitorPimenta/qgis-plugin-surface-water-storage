@@ -101,7 +101,7 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterEnum(
                 'SELECT_OPTION',
-                'Select an parameter to calculate the inundation area',
+                'Parameter',
                 options=[
                         self.HEIGHT_PARAMETER,
                         self.ELEVATION_PARAMETER,
