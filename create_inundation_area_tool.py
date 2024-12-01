@@ -307,23 +307,25 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
         Returns a localised short help string for the algorithm.
         """
         return self.tr("""
-                <html>
-                    <head>
-                        <title>Inundation Area Plugin</title>
-                    </head>
-                    <body>
-                        <p>
-                            The raster and the area needs be in projected CRS (use meters).
-                        </p>
-                        <p>
-                            The DEM needs to be hydrologically consistent (no sinks).
-                        </p>
-                        <p>
-                            Its recommended that the vertical step be 1.
-                        </p>
-                    </body>
-                </html>
-                """)
+        <html>
+            <body>
+                <p>       
+        This tool calculates the flooded area based on area-elevation-volume curves. Based on the parameter chosen by the user, all variables relating to that parameter are returned in the inundation area polygon attribute table
+                </p>
+                <p>
+        <strong>DEM: </strong>The raster containing the band with the altimetry of the area. 
+        <strong>Area: </strong>The polygon containing the area that the area-elevation-volume curves will be calculated.
+        <strong>Parameter: </strong>The area-elevation-volume curve parameter used to calculate the inundation area.
+        <strong>Parameter Value: </strong>The value of the parameter that will be used to calculate the inundation area.
+        <strong>Vertical step: </strong>The elevation differential for calculating area-elevation-volume curves.
+        <strong>Inundation area: </strong>The path to inundation area generation.
+        The raster and the area needs be in projected CRS.
+        The DEM needs to be hydrologically consistent (no sinks).
+        Its recommended that the vertical step be 1.
+                </p>
+            </body>
+        </html>
+                    """)
 
     def createInstance(self):
         return createInundationAreaAlgorithm()
