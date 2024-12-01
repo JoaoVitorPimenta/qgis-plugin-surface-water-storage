@@ -57,11 +57,11 @@ def calculateAreaHeightVolume (areaHeightCurve):
     '''
     data = loadtxt(areaHeightCurve, delimiter=',',skiprows=1)
 
-    if len(data) < 1:
+    if len(data) <= 2:
         raise QgsProcessingException(
-            'The vector is too small!'
+            'Insufficient number of points for the Area-Volume-Elevation curve!'
         )
-
+    
     xd = data[:, 0].tolist()
     yd = data[:, 1].tolist()
 
