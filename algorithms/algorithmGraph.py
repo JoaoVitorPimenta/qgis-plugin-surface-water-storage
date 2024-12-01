@@ -61,14 +61,14 @@ def calculateAreaHeightVolume (areaHeightCurve):
         raise QgsProcessingException(
             'Insufficient number of points for the Area-Volume-Elevation curve!'
         )
-    
+
     xd = data[:, 0].tolist()
     yd = data[:, 1].tolist()
 
     integration = cumulative_trapezoid(xd,yd)
     integrationComplet = append(integration,0)
-    data_with_integration = column_stack((data,integrationComplet))
-    dataWoLastRow = data_with_integration[:-1]
+    dataWithIntegration = column_stack((data,integrationComplet))
+    dataWoLastRow = dataWithIntegration[:-1]
 
     return dataWoLastRow
 
