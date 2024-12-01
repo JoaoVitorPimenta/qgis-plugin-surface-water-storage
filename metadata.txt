@@ -10,7 +10,7 @@ version=0.1
 author=João Vitor Pimenta
 email=jvpjoaopimenta@gmail.com
 
-about=This plugin aims to study surface water storage,for large lakes and reservoirs, among others. It does this through two tools: calculating how the stored water occupies the area (by generating the inundation area polygon), and calculating the area-volume-elevation relationship for the area.
+about=This plugin aims to study surface water storage, for large lakes and reservoirs, among others. It does this through two tools: calculating how the stored water occupies the area (by generating the inundation area polygon), and calculating the area-volume-elevation relationship for the area.
 
 tracker=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage/issues
 repository=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage
