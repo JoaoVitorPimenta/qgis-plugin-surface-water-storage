@@ -310,7 +310,7 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
         <html>
             <body>
                 <p>       
-        This tool calculates the flooded area based on area-elevation-volume curves. Based on the parameter chosen by the user, all variables relating to that parameter are returned in the inundation area polygon attribute table
+        This tool calculates the flooded area based on area-elevation-volume curves. Based on the parameter chosen by the user, all variables relating to that parameter are returned in the inundation area polygon attribute table.
                 </p>
                 <p>
         <strong>DEM: </strong>The raster containing the band with the altimetry of the area. 
