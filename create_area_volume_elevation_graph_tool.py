@@ -267,14 +267,14 @@ class createAreaVolumeElevationGraphAlgorithm(QgsProcessingAlgorithm):
         <html>
             <body>
                 <p>       
-        This tool calculates the Area-Elevation-Volume curves and generates the graph with the curves                
+        This tool calculates the Area-Elevation-Volume curves and generates the graph with the curves.               
                 </p>
                 <p>
         <strong>DEM: </strong>The raster containing the band with the altimetry of the area. 
-        <strong>Area: </strong>The polygon containing the area that the area-elevation-volume curves will be calculated.
-        <strong>Vertical step: </strong>The elevation differential for calculating area-elevation-volume curves.
+        <strong>Area: </strong>The polygon containing the area that the Area-Elevation-Volume curves will be calculated.
+        <strong>Vertical step: </strong>The elevation differential for calculating Area-Elevation-Volume curves.
         <strong>Data: </strong>The path with the data from each point used to generate the Area-Elevation-Volume curves.
-        <strong>Graph: </strong>The path with the Area-Elevation-Volume graph.
+        <strong>Graph: </strong>The path to Area-Elevation-Volume graph.
         The raster and the area needs be in projected CRS.
         The DEM needs to be hydrologically consistent (no sinks).
         Its recommended that the vertical step be 1.
