@@ -117,7 +117,7 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
                 self.INPUT_PARAMETER,
                 'Parameter value',
                 type=QgsProcessingParameterNumber.Double,
-                defaultValue='',
+                defaultValue='10.000000',
                 maxValue=float('inf')
             )
         )
