@@ -127,7 +127,7 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
                 self.VERTICAL_SPACING,
                 'Vertical step (in meters):',
                 type=QgsProcessingParameterNumber.Double,
-                defaultValue='0.00'
+                defaultValue='1.00'
             )
         )
 
