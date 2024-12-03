@@ -73,13 +73,13 @@ def calculateAreaHeightVolume (areaHeightCurve):
     dataWoLastRow = data_with_integration[:-1]
 
     return dataWoLastRow
-def findParameter (dataAHV,parameter,parameterValue):
+def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
     '''
     from the elevation-area-volume data, interpolates the parameter value
     provided by the user in the curves and finds the equivalent elevation
     '''
     volumes = dataAHV[:, 2]
-    heights = dataAHV[:, 1]
+    elevations = dataAHV[:, 1]
     areas = dataAHV[:, 0]
 
     errorMessageBelow = (
@@ -96,40 +96,40 @@ def findParameter (dataAHV,parameter,parameterValue):
 
     if parameter == HEIGHT_PARAMETER:
 
-        heightAreaInterpolation = interp1d(heights, areas, kind='linear')
-        heightVolInterpolation = interp1d(heights, volumes, kind='linear')
+        heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
+        heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
 
-        if parameterValue < 0:
+        if parameterValue < verticalSpacing:
             raise QgsProcessingException(
-                "The height can't be negative"
+                errorMessageBelow + str(verticalSpacing)
                 )
-        if parameterValue > (heights[-1]-heights[0] +1):
+        if parameterValue > (elevations[-1]-elevations[0] + verticalSpacing):
             raise QgsProcessingException(
-                errorMessageAbove + str(heights[-1]-heights[0] +1)
+                errorMessageAbove + str(elevations[-1]-elevations[0] + verticalSpacing)
                 )
 
-        waterElevation = float(parameterValue+heights[0]-1)
+        waterElevation = float(parameterValue+elevations[0]-1)
         waterHeight = float(parameterValue)
-        waterArea = float(heightAreaInterpolation(parameterValue+heights[0]-1))
-        waterVolume = float(heightVolInterpolation(parameterValue+heights[0]-1))
+        waterArea = float(heightAreaInterpolation(parameterValue+elevations[0]-1))
+        waterVolume = float(heightVolInterpolation(parameterValue+elevations[0]-1))
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == ELEVATION_PARAMETER:
 
-        heightAreaInterpolation = interp1d(heights, areas, kind='linear')
-        heightVolInterpolation = interp1d(heights, volumes, kind='linear')
+        heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
+        heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
 
-        if parameterValue < heights[0]:
+        if parameterValue < elevations[0]:
             raise QgsProcessingException(
-                errorMessageBelow + str(heights[0])
+                errorMessageBelow + str(elevations[0])
                 )
-        if parameterValue > heights[-1]:
+        if parameterValue > elevations[-1]:
             raise QgsProcessingException(
-                errorMessageAbove + str(heights[-1])
+                errorMessageAbove + str(elevations[-1])
                 )
 
         waterElevation = float(parameterValue)
-        waterHeight = float(waterElevation - heights[0] +1)
+        waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
         waterArea = float(heightAreaInterpolation(parameterValue))
         waterVolume = float(heightVolInterpolation(parameterValue))
 
@@ -138,7 +138,7 @@ def findParameter (dataAHV,parameter,parameterValue):
     if parameter == AREA_PARAMETER:
 
         areaVolInterpolation = interp1d(areas, volumes, kind='linear')
-        areaHeightInterpolation = interp1d(areas, heights, kind='linear')
+        areaHeightInterpolation = interp1d(areas, elevations, kind='linear')
 
         if parameterValue < areas[0]:
             raise QgsProcessingException(
@@ -150,7 +150,7 @@ def findParameter (dataAHV,parameter,parameterValue):
                 )
 
         waterElevation = float(areaHeightInterpolation(parameterValue))
-        waterHeight = float(waterElevation - heights[0] +1)
+        waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
         waterArea = float(parameterValue)
         waterVolume = float(areaVolInterpolation(parameterValue))
         return waterElevation, waterHeight, waterArea, waterVolume
@@ -158,7 +158,7 @@ def findParameter (dataAHV,parameter,parameterValue):
     if parameter == VOLUME_PARAMETER:
 
         volAreaInterpolation = interp1d(volumes, areas, kind='linear')
-        volHeightInterpolation = interp1d(volumes, heights, kind='linear')
+        volHeightInterpolation = interp1d(volumes, elevations, kind='linear')
 
         if parameterValue < volumes[0]:
             raise QgsProcessingException(
@@ -170,7 +170,7 @@ def findParameter (dataAHV,parameter,parameterValue):
                 )
 
         waterElevation = float(volHeightInterpolation(parameterValue))
-        waterHeight = float(waterElevation - heights[0] +1)
+        waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
         waterArea = float(volAreaInterpolation(parameterValue))
         waterVolume = float(parameterValue)
 
@@ -284,7 +284,8 @@ def executePlugin (dem,area,selectedParameter,parameterValue,spacing):
     AHV = calculateAreaHeightVolume(hypsometricCurve)
     waterElevation, waterHeight, waterArea, waterVolume = findParameter(AHV,
                                                     selectedParameter,
-                                                    parameterValue)
+                                                    parameterValue,
+                                                    spacing)
     inundAreaClipped = clipInundationArea(dem,area)
     inundAreaReclassified = reclassifyInundationArea(inundAreaClipped,
                                                     waterElevation)
