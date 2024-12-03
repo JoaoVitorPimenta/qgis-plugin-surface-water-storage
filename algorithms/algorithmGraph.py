@@ -77,39 +77,39 @@ def createGraph(npAHVData):
     create a graph with area-height-volume data,
     generating the elevation-area and elevation-volume curves
     '''
-    area = npAHVData[:,0]/(10**6)
-    height = npAHVData[:,1]
-    volume = npAHVData[:,2]/(10**9)
+    areas = npAHVData[:,0]/(10**6)
+    elevations = npAHVData[:,1]
+    volumes = npAHVData[:,2]/(10**9)
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     fig.add_trace(Scatter(
-                            x=volume,
-                            y=height,
+                            x=volumes,
+                            y=elevations,
                             mode='lines',
-                            name='Volume - Height'
+                            name='Volume - Elevation'
                             ),
                             secondary_y=False
                             )
-    fig.add_trace(Scatter(x=area,
-                            y=height,
+    fig.add_trace(Scatter(x=areas,
+                            y=elevations,
                             mode='lines',
-                            name='Area - Height'
+                            name='Area - Elevation'
                             ),
                             secondary_y=True
                             )
 
     fig.data[1].update(xaxis='x2')
     fig.update_layout(
-        title='Area x Height x Volume',
+        title='Area x Elevation x Volume',
         xaxis=dict(title='Volume (km3)'),
-        yaxis=dict(title='Height (m)'),
+        yaxis=dict(title='Elevation (m)'),
         xaxis2=dict(title='Area (km2)',
                     overlaying='x',
                     side='top',
                     autorange='reversed'),
         yaxis2=dict(
-                    title='Height (m)',
+                    title='Elevation (m)',
                     overlaying='y',
                     side='right',
                     position=1
@@ -119,7 +119,9 @@ def createGraph(npAHVData):
     return fig
 
 def executePlugin (dem,area,step):
-    
+    '''
+    uses input parameters to execute plugin functions
+    '''
     hypsometricCurve = generateHypsometricCurve(dem,area,step)
     areaHeightVolumeCSV = calculateAreaHeightVolume(hypsometricCurve)
     graph = createGraph(areaHeightVolumeCSV)
