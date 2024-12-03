@@ -27,9 +27,8 @@ from qgis.core import (QgsProcessingException,
                        QgsVectorLayer,
                        QgsField)
 import processing
-from numpy import loadtxt, append, column_stack
+from numpy import loadtxt, append, column_stack, interp
 from scipy.integrate import cumulative_trapezoid
-from scipy.interpolate import interp1d
 
 def generateHypsometricCurves (dem,area,step):
     '''
@@ -96,9 +95,6 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
 
     if parameter == HEIGHT_PARAMETER:
 
-        heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
-        heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
-
         if parameterValue < verticalSpacing:
             raise QgsProcessingException(
                 errorMessageBelow + str(verticalSpacing)
@@ -110,14 +106,11 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
 
         waterElevation = float(parameterValue+elevations[0]-1)
         waterHeight = float(parameterValue)
-        waterArea = float(heightAreaInterpolation(parameterValue+elevations[0]-1))
-        waterVolume = float(heightVolInterpolation(parameterValue+elevations[0]-1))
+        waterArea = float(interp(parameterValue, elevations, areas))
+        waterVolume = float(interp(parameterValue, elevations, volumes))
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == ELEVATION_PARAMETER:
-
-        heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
-        heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
 
         if parameterValue < elevations[0]:
             raise QgsProcessingException(
@@ -130,15 +123,12 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
 
         waterElevation = float(parameterValue)
         waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
-        waterArea = float(heightAreaInterpolation(parameterValue))
-        waterVolume = float(heightVolInterpolation(parameterValue))
+        waterArea = float(interp(parameterValue, elevations, areas))
+        waterVolume = float(interp(parameterValue, elevations, volumes))
 
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == AREA_PARAMETER:
-
-        areaVolInterpolation = interp1d(areas, volumes, kind='linear')
-        areaHeightInterpolation = interp1d(areas, elevations, kind='linear')
 
         if parameterValue < areas[0]:
             raise QgsProcessingException(
@@ -149,16 +139,13 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
                 errorMessageAbove + str(areas[-1])
                 )
 
-        waterElevation = float(areaHeightInterpolation(parameterValue))
+        waterElevation = float(interp(parameterValue, areas, elevations))
         waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
         waterArea = float(parameterValue)
-        waterVolume = float(areaVolInterpolation(parameterValue))
+        waterVolume = float(interp(parameterValue, areas, volumes))
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == VOLUME_PARAMETER:
-
-        volAreaInterpolation = interp1d(volumes, areas, kind='linear')
-        volHeightInterpolation = interp1d(volumes, elevations, kind='linear')
 
         if parameterValue < volumes[0]:
             raise QgsProcessingException(
@@ -169,9 +156,9 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
                 errorMessageAbove + str(volumes[-1])
                 )
 
-        waterElevation = float(volHeightInterpolation(parameterValue))
+        waterElevation = float(interp(parameterValue, volumes, elevations))
         waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
-        waterArea = float(volAreaInterpolation(parameterValue))
+        waterArea = float(interp(parameterValue, volumes, areas))
         waterVolume = float(parameterValue)
 
         return waterElevation, waterHeight, waterArea, waterVolume
