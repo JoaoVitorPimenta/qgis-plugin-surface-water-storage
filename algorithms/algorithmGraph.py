@@ -80,7 +80,6 @@ def calculateAreaHeightVolume (areaHeightCurve):
     dataWoLastRow = dataWithIntegration[:-1]
 
     return dataWoLastRow
-
 def createGraph(npAHVData):
     '''
     create a graph with area-height-volume data,
