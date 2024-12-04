@@ -30,6 +30,28 @@ import processing
 from numpy import loadtxt, append, column_stack, interp
 from scipy.integrate import cumulative_trapezoid
 
+def executePlugin (dem,area,selectedParameter,parameterValue,spacing):
+    '''
+    uses input parameters to execute plugin functions
+    '''
+    hypsometricCurve = generateHypsometricCurves(dem,area,spacing)
+    AHV = calculateAreaHeightVolume(hypsometricCurve)
+    waterElevation, waterHeight, waterArea, waterVolume = findParameter(AHV,
+                                                    selectedParameter,
+                                                    parameterValue,
+                                                    spacing)
+    inundAreaClipped = clipInundationArea(dem,area)
+    inundAreaReclassified = reclassifyInundationArea(inundAreaClipped,
+                                                    waterElevation)
+    inundAreaVectorized = vectorizeInundationArea(inundAreaReclassified)
+    inundAreaDissolved = dissolveInundationArea(inundAreaVectorized)
+    inundAreaWAttributes = addAttributes(inundAreaDissolved,
+                                            waterElevation,
+                                            waterHeight,
+                                            waterArea,
+                                            waterVolume)
+
+    return inundAreaWAttributes
 def generateHypsometricCurves (dem,area,step):
     '''
     generates hypsometric curve data
@@ -263,25 +285,3 @@ def addAttributes (inundArea, waterElev, waterHeight, waterArea, waterVolume):
     inundArea.commitChanges()
 
     return inundArea
-def executePlugin (dem,area,selectedParameter,parameterValue,spacing):
-    '''
-    uses input parameters to execute plugin functions
-    '''
-    hypsometricCurve = generateHypsometricCurves(dem,area,spacing)
-    AHV = calculateAreaHeightVolume(hypsometricCurve)
-    waterElevation, waterHeight, waterArea, waterVolume = findParameter(AHV,
-                                                    selectedParameter,
-                                                    parameterValue,
-                                                    spacing)
-    inundAreaClipped = clipInundationArea(dem,area)
-    inundAreaReclassified = reclassifyInundationArea(inundAreaClipped,
-                                                    waterElevation)
-    inundAreaVectorized = vectorizeInundationArea(inundAreaReclassified)
-    inundAreaDissolved = dissolveInundationArea(inundAreaVectorized)
-    inundAreaWAttributes = addAttributes(inundAreaDissolved,
-                                            waterElevation,
-                                            waterHeight,
-                                            waterArea,
-                                            waterVolume)
-
-    return inundAreaWAttributes

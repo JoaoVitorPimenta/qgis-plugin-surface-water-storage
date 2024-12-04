@@ -28,6 +28,15 @@ from plotly.graph_objects import Scatter
 from plotly.subplots import make_subplots
 from qgis.core import QgsProcessingException
 
+def executePlugin (dem,area,step):
+    '''
+    uses input parameters to execute plugin functions
+    '''
+    hypsometricCurve = generateHypsometricCurve(dem,area,step)
+    areaHeightVolumeCSV = calculateAreaHeightVolume(hypsometricCurve)
+    graph = createGraph(areaHeightVolumeCSV)
+
+    return areaHeightVolumeCSV, graph
 def generateHypsometricCurve (dem,area,step):
     '''
     generates hypsometric curve data
@@ -117,13 +126,3 @@ def createGraph(npAHVData):
                         )
 
     return fig
-
-def executePlugin (dem,area,step):
-    '''
-    uses input parameters to execute plugin functions
-    '''
-    hypsometricCurve = generateHypsometricCurve(dem,area,step)
-    areaHeightVolumeCSV = calculateAreaHeightVolume(hypsometricCurve)
-    graph = createGraph(areaHeightVolumeCSV)
-
-    return areaHeightVolumeCSV, graph
