@@ -109,7 +109,7 @@ def createGraph(npAHVData):
 
     fig.data[1].update(xaxis='x2')
     fig.update_layout(
-        title='Area x Elevation x Volume',
+        title='Area x Volume x Elevation',
         xaxis=dict(title='Volume (km3)'),
         yaxis=dict(title='Elevation (m)'),
         xaxis2=dict(title='Area (km2)',
