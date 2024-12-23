@@ -27,8 +27,9 @@ from qgis.core import (QgsProcessingException,
                        QgsVectorLayer,
                        QgsField)
 import processing
-from numpy import loadtxt, append, column_stack, interp
+from numpy import loadtxt, append, column_stack
 from scipy.integrate import cumulative_trapezoid
+from scipy.interpolate import interp1d
 
 def executePlugin (dem,area,selectedParameter,parameterValue,spacing):
     '''
@@ -126,10 +127,13 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
                 errorMessageAbove + str(elevations[-1]-elevations[0] + verticalSpacing)
                 )
 
+        heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
+        heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
+
         waterElevation = float(parameterValue+elevations[0]-1)
         waterHeight = float(parameterValue)
-        waterArea = float(interp(parameterValue, elevations, areas))
-        waterVolume = float(interp(parameterValue, elevations, volumes))
+        waterArea = float(heightAreaInterpolation(parameterValue+elevations[0]-1))
+        waterVolume = float(heightVolInterpolation(parameterValue+elevations[0]-1))
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == ELEVATION_PARAMETER:
@@ -143,10 +147,13 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
                 errorMessageAbove + str(elevations[-1])
                 )
 
+        heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
+        heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
+
         waterElevation = float(parameterValue)
         waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
-        waterArea = float(interp(parameterValue, elevations, areas))
-        waterVolume = float(interp(parameterValue, elevations, volumes))
+        waterArea = float(heightAreaInterpolation(parameterValue))
+        waterVolume = float(heightVolInterpolation(parameterValue))
 
         return waterElevation, waterHeight, waterArea, waterVolume
 
@@ -161,10 +168,13 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
                 errorMessageAbove + str(areas[-1])
                 )
 
-        waterElevation = float(interp(parameterValue, areas, elevations))
+        areaVolInterpolation = interp1d(areas, volumes, kind='linear')
+        areaHeightInterpolation = interp1d(areas, elevations, kind='linear')
+
+        waterElevation = float(areaHeightInterpolation(parameterValue))
         waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
         waterArea = float(parameterValue)
-        waterVolume = float(interp(parameterValue, areas, volumes))
+        waterVolume = float(areaVolInterpolation(parameterValue))
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == VOLUME_PARAMETER:
@@ -178,9 +188,12 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
                 errorMessageAbove + str(volumes[-1])
                 )
 
-        waterElevation = float(interp(parameterValue, volumes, elevations))
+        volAreaInterpolation = interp1d(volumes, areas, kind='linear')
+        volHeightInterpolation = interp1d(volumes, elevations, kind='linear')
+
+        waterElevation = float(volHeightInterpolation(parameterValue))
         waterHeight = float(waterElevation - elevations[0] + verticalSpacing)
-        waterArea = float(interp(parameterValue, volumes, areas))
+        waterArea = float(volAreaInterpolation(parameterValue))
         waterVolume = float(parameterValue)
 
         return waterElevation, waterHeight, waterArea, waterVolume
