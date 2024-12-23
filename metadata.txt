@@ -25,6 +25,7 @@ changelog=
         0.3
         -Plugin stable version release
         -code improvements to increase performance
+        -a usage example was added to the README
 
         0.2
         -updated default values
