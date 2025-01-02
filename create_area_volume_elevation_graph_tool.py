@@ -42,6 +42,9 @@ from qgis.core import (QgsProcessingAlgorithm,
                        QgsProcessingParameterNumber)
 from numpy import savetxt
 from .algorithms.algorithmGraph import executePlugin
+from .exceptions.inputExceptions import (verifyDEMInputDataValues,
+                                         verifyNumberOfFeaturesAreaInput,
+                                         verifyVerticalSpacingInput)
 
 class createAreaVolumeElevationGraphAlgorithm(QgsProcessingAlgorithm):
     """
@@ -146,46 +149,10 @@ class createAreaVolumeElevationGraphAlgorithm(QgsProcessingAlgorithm):
                                                         )
         # Compute the number of steps to display within the progress bar and
         # get features from source
-        if verticalSpacingInput <=0:
-            raise QgsProcessingException(
-                'Vertical spacing must be greather than 0'
-                                         )
 
-        featuresCount = sum(1 for _ in areaInput.getFeatures())
-        if featuresCount > 1:
-            raise QgsProcessingException(
-                'The layer has more than one feature!'
-            )
-
-        demPr = demLayer.dataProvider()
-        demArray = []
-        feature = next(areaInput.getFeatures())
-        fGeometry = feature.geometry()
-        fBBox = fGeometry.boundingBox()
-        demBlock = demPr.block(1,fBBox,demLayer.width(),demLayer.height())
-        demNoDataValue = demBlock.noDataValue()
-
-        for j in range(demLayer.height()):
-            for k in range(demLayer.width()):
-                demArray.append((demBlock).value(j,k))
-
-        if all(x == demNoDataValue for x in demArray):
-            raise QgsProcessingException(
-                'The feature is only in NODATA values'
-                )
-
-        if fGeometry.intersects(demLayer.extent()) is False:
-            raise QgsProcessingException(
-                "The feature don't intersects the DEM extent"
-            )
-
-        demCellX = demLayer.rasterUnitsPerPixelX()
-        demCellY = demLayer.rasterUnitsPerPixelY()
-
-        if (fBBox.width() < demCellX) and (fBBox.height() < demCellY):
-            raise QgsProcessingException(
-                'The feature is smaller than raster pixel size'
-            )
+        verifyVerticalSpacingInput(verticalSpacingInput)
+        verifyDEMInputDataValues(demLayer, areaInput)
+        verifyNumberOfFeaturesAreaInput(areaInput)
 
         AHV, graph = executePlugin(demLayer,
                                     areaInput,

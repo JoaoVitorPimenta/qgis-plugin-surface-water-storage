@@ -33,6 +33,7 @@ def executePlugin (dem,area,step):
     uses input parameters to execute plugin functions
     '''
     hypsometricCurve = generateHypsometricCurve(dem,area,step)
+    verifyNumberOfPointsInCurve(hypsometricCurve)
     areaHeightVolumeCSV = calculateAreaHeightVolume(hypsometricCurve)
     graph = createGraph(areaHeightVolumeCSV)
 
@@ -60,9 +61,10 @@ def generateHypsometricCurve (dem,area,step):
     path = hypsometricCurve+'/histogram_'+maskName+'_'+str(featureID)+'.csv'
 
     return path
-def calculateAreaHeightVolume (areaHeightCurve):
+def verifyNumberOfPointsInCurve (areaHeightCurve):
     '''
-    integrates the hypsometric curve, generating elevation-area-volume data
+    Checks whether there are a sufficient number of points
+    on the generated curve for numerical integration
     '''
     data = loadtxt(areaHeightCurve, delimiter=',',skiprows=1)
 
@@ -70,6 +72,11 @@ def calculateAreaHeightVolume (areaHeightCurve):
         raise QgsProcessingException(
             'Insufficient number of points for the Area-Volume-Elevation curve!'
         )
+def calculateAreaHeightVolume (areaHeightCurve):
+    '''
+    integrates the hypsometric curve, generating elevation-area-volume data
+    '''
+    data = loadtxt(areaHeightCurve, delimiter=',',skiprows=1)
 
     xd = data[:, 0].tolist()
     yd = data[:, 1].tolist()
