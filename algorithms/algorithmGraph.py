@@ -117,9 +117,9 @@ def createGraph(npAHVData):
     fig.data[1].update(xaxis='x2')
     fig.update_layout(
         title='Area x Volume x Elevation',
-        xaxis=dict(title='Volume (km3)'),
+        xaxis=dict(title='Volume (km³)'),
         yaxis=dict(title='Elevation (m)'),
-        xaxis2=dict(title='Area (km2)',
+        xaxis2=dict(title='Area (km²)',
                     overlaying='x',
                     side='top',
                     autorange='reversed'),

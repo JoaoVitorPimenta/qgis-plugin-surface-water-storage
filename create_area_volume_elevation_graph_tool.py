@@ -166,7 +166,7 @@ class createAreaVolumeElevationGraphAlgorithm(QgsProcessingAlgorithm):
                 areaHeightVolumeDataPath,
                 AHV,
                 delimiter=',',
-                header='Area (m2),Elevation (m),Volume (m3)',
+                header='Area (m²),Elevation (m),Volume (m³)',
                 comments='',
                 fmt='%s'
                 )
