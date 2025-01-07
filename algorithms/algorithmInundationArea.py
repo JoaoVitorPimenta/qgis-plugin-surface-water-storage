@@ -21,6 +21,14 @@
  ***************************************************************************/
 """
 
+__author__ = 'João Vitor Pimenta'
+__date__ = '2024-07-13'
+__copyright__ = '(C) 2024 by João Vitor Pimenta'
+
+# This will get replaced with a git SHA1 when you do a git archive
+
+__revision__ = '$Format:%H$'
+
 from qgis.PyQt.QtCore import QVariant
 from qgis.core import (QgsProcessingException,
                        QgsRasterLayer,
