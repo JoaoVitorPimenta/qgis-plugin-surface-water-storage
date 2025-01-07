@@ -92,9 +92,9 @@ def createGraph(npAHVData):
     create a graph with area-height-volume data,
     generating the elevation-area and elevation-volume curves
     '''
-    areas = npAHVData[:,0]/(10**6)
+    areas = npAHVData[:,0]
     elevations = npAHVData[:,1]
-    volumes = npAHVData[:,2]/(10**9)
+    volumes = npAHVData[:,2]
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -117,9 +117,9 @@ def createGraph(npAHVData):
     fig.data[1].update(xaxis='x2')
     fig.update_layout(
         title='Area x Volume x Elevation',
-        xaxis=dict(title='Volume (km³)'),
+        xaxis=dict(title='Volume (m³)'),
         yaxis=dict(title='Elevation (m)'),
-        xaxis2=dict(title='Area (km²)',
+        xaxis2=dict(title='Area (m²)',
                     overlaying='x',
                     side='top',
                     autorange='reversed'),
