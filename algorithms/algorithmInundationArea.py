@@ -143,7 +143,7 @@ def verifyIfParameterValueIsInTheCurve (dataAHV,parameter,parameterValue,vertica
                 errorMessageAbove + str(elevations[-1]-elevations[0] + verticalSpacing)
                 )
                                                                                                 
-    if parameter == ELEVATION_PARAMETER:
+    elif parameter == ELEVATION_PARAMETER:
 
         if parameterValue < elevations[0]:
             raise QgsProcessingException(
@@ -154,7 +154,7 @@ def verifyIfParameterValueIsInTheCurve (dataAHV,parameter,parameterValue,vertica
                 errorMessageAbove + str(elevations[-1])
                 )
         
-    if parameter == AREA_PARAMETER:
+    elif parameter == AREA_PARAMETER:
 
         if parameterValue < areas[0]:
             raise QgsProcessingException(
@@ -165,7 +165,7 @@ def verifyIfParameterValueIsInTheCurve (dataAHV,parameter,parameterValue,vertica
                 errorMessageAbove + str(areas[-1])
                 )
         
-    if parameter == VOLUME_PARAMETER:
+    elif parameter == VOLUME_PARAMETER:
 
         if parameterValue < volumes[0]:
             raise QgsProcessingException(
