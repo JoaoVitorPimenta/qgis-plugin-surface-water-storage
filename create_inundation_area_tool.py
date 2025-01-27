@@ -40,7 +40,7 @@ from qgis.core import (QgsFeatureSink,
                        QgsProcessingParameterVectorDestination,
                        QgsProcessingParameterNumber,
                        QgsProcessingParameterEnum,
-                       QgsProcessingParameterFeatureSource,
+                       QgsProcessingParameterVectorLayer,
                        QgsProcessing)
 from .algorithms.algorithmInundationArea import executePlugin
 from .exceptions.libsExceptions import (verifyNumpyLib,
@@ -93,7 +93,7 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
         )
 
         self.addParameter(
-            QgsProcessingParameterFeatureSource(
+            QgsProcessingParameterVectorLayer(
                 self.AREA,
                 self.tr('Area'),
                 defaultValue=None,

@@ -38,7 +38,8 @@ from qgis.core import (QgsProcessingAlgorithm,
                        QgsProcessingParameterRasterLayer,
                        QgsProcessingParameterVectorLayer,
                        QgsProcessingParameterFileDestination,
-                       QgsProcessingParameterNumber)
+                       QgsProcessingParameterNumber,
+                       QgsProcessing)
 from numpy import savetxt
 from .algorithms.algorithmGraph import executePlugin
 from .exceptions.libsExceptions import (verifyNumpyLib,
@@ -92,7 +93,8 @@ class createAreaVolumeElevationGraphAlgorithm(QgsProcessingAlgorithm):
             QgsProcessingParameterVectorLayer(
                 self.AREA,
                 self.tr('Area'),
-                defaultValue=None
+                defaultValue=None,
+                types = [QgsProcessing.TypeVectorPolygon]
             )
         )
 
