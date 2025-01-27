@@ -36,12 +36,14 @@ from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsProcessingAlgorithm,
                        QgsProcessingParameterRasterLayer,
-                       QgsProcessingException,
                        QgsProcessingParameterVectorLayer,
                        QgsProcessingParameterFileDestination,
                        QgsProcessingParameterNumber)
 from numpy import savetxt
 from .algorithms.algorithmGraph import executePlugin
+from .exceptions.libsExceptions import (verifyNumpyLib,
+                                        verifyPlotlyLib,
+                                        verifyScipyLib)
 from .exceptions.inputExceptions import (verifyDEMInputDataValues,
                                          verifyNumberOfFeaturesAreaInput,
                                          verifyVerticalSpacingInput)
@@ -149,6 +151,10 @@ class createAreaVolumeElevationGraphAlgorithm(QgsProcessingAlgorithm):
                                                         )
         # Compute the number of steps to display within the progress bar and
         # get features from source
+
+        verifyNumpyLib()
+        verifyScipyLib()
+        verifyPlotlyLib()
 
         verifyVerticalSpacingInput(verticalSpacingInput)
         verifyDEMInputDataValues(demLayer, areaInput)

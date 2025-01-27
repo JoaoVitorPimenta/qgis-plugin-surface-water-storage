@@ -37,13 +37,14 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.core import (QgsFeatureSink,
                        QgsProcessingAlgorithm,
                        QgsProcessingParameterRasterLayer,
-                       QgsProcessingException,
                        QgsProcessingParameterVectorDestination,
                        QgsProcessingParameterNumber,
                        QgsProcessingParameterEnum,
                        QgsProcessingParameterFeatureSource,
                        QgsProcessing)
 from .algorithms.algorithmInundationArea import executePlugin
+from .exceptions.libsExceptions import (verifyNumpyLib,
+                                        verifyScipyLib)
 from .exceptions.inputExceptions import (verifyDEMInputDataValues,
                                          verifyNumberOfFeaturesAreaInput,
                                          verifyVerticalSpacingInput)
@@ -182,6 +183,9 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
                                                         self.VERTICAL_SPACING,
                                                         context
                                                         )
+
+        verifyNumpyLib()
+        verifyScipyLib()
 
         verifyVerticalSpacingInput(verticalSpacingInput)
         verifyDEMInputDataValues(demLayer, areaInput)
