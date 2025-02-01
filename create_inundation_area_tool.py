@@ -290,7 +290,6 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
         <strong>Inundation area: </strong>The path to inundation area generation.
         The raster and the area needs be in projected CRS.
         The DEM needs to be hydrologically consistent (no sinks).
-        Its recommended that the vertical step be 1.
                 </p>
             </body>
         </html>
