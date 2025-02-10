@@ -44,7 +44,7 @@ changelog=
         -Plugin experimental version release
 
 # Tags are comma separated with spaces allowed
-tags=python,water,reservoir,lake,storage
+tags=python, water, reservoir, lake, storage, area, elevation, volume, capacity, graph, inundation, flood, flooded
 
 homepage=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage
 category=Analysis
