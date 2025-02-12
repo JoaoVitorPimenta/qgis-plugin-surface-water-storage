@@ -38,15 +38,17 @@ import processing
 from numpy import loadtxt, append, column_stack
 from scipy.integrate import cumulative_trapezoid
 from scipy.interpolate import interp1d
-
+from ..exceptions.processingExceptions import (verifyIfAreaValueIsInTheCurve,
+                                               verifyIfElevationValueIsInTheCurve,
+                                               verifyIfHeightValueIsInTheCurve,
+                                               verifyIfVolumeValueIsInTheCurve,
+                                               verifyNumberOfPointsInCurve)
 def executePlugin (dem,area,selectedParameter,parameterValue,spacing):
     '''
     uses input parameters to execute plugin functions
     '''
     hypsometricCurve = generateHypsometricCurves(dem,area,spacing)
-    verifyNumberOfPointsInCurve(hypsometricCurve)
     AHV = calculateAreaHeightVolume(hypsometricCurve)
-    verifyIfParameterValueIsInTheCurve (AHV,selectedParameter,parameterValue,spacing)
     waterElevation, waterHeight, waterArea, waterVolume = findParameter(AHV,
                                                     selectedParameter,
                                                     parameterValue,
@@ -85,22 +87,13 @@ def generateHypsometricCurves (dem,area,step):
     path = hypsometricCurve+'/histogram_'+maskName+'_'+str(featureID)+'.csv'
 
     return path
-def verifyNumberOfPointsInCurve (areaHeightCurve):
-    '''
-    Checks whether there are a sufficient number of points
-    on the generated curve for numerical integration
-    '''
-    data = loadtxt(areaHeightCurve, delimiter=',',skiprows=1)
-
-    if len(data) <= 2:
-        raise QgsProcessingException(
-            'Insufficient number of points for the Area-Volume-Elevation curve!'
-        )
 def calculateAreaHeightVolume (areaHeightCurve):
     '''
     integrates the hypsometric curve, generating elevation-area-volume data
     '''
     data = loadtxt(areaHeightCurve, delimiter=',',skiprows=1)
+
+    verifyNumberOfPointsInCurve(data)
 
     xd = data[:, 0].tolist()
     yd = data[:, 1].tolist()
@@ -111,70 +104,6 @@ def calculateAreaHeightVolume (areaHeightCurve):
     dataWoLastRow = data_with_integration[:-1]
 
     return dataWoLastRow
-def verifyIfParameterValueIsInTheCurve (dataAHV,parameter,parameterValue,verticalSpacing):
-    '''
-    Checks whether in the curve with area, elevation and volume data
-    the value given as input by the user exists in the curve
-    '''
-    HEIGHT_PARAMETER = 'HEIGHT (m)'
-    ELEVATION_PARAMETER = 'ELEVATION (m)'
-    AREA_PARAMETER = 'AREA (m2)'
-    VOLUME_PARAMETER = 'VOLUME (m3)'
-
-    volumes = dataAHV[:, 2]
-    elevations = dataAHV[:, 1]
-    areas = dataAHV[:, 0]
-
-    errorMessageBelow = (
-        'This value is below the minimum value of the curve: '
-        )
-    errorMessageAbove = (
-        'This value is above the maximum value of the curve: '
-        )
-
-    if parameter == HEIGHT_PARAMETER:
-
-        if parameterValue < verticalSpacing:
-            raise QgsProcessingException(
-                errorMessageBelow + str(verticalSpacing)
-                )
-        if parameterValue > (elevations[-1]-elevations[0] + verticalSpacing):
-            raise QgsProcessingException(
-                errorMessageAbove + str(elevations[-1]-elevations[0] + verticalSpacing)
-                )
-                                                                                                
-    elif parameter == ELEVATION_PARAMETER:
-
-        if parameterValue < elevations[0]:
-            raise QgsProcessingException(
-                errorMessageBelow + str(elevations[0])
-                )
-        if parameterValue > elevations[-1]:
-            raise QgsProcessingException(
-                errorMessageAbove + str(elevations[-1])
-                )
-        
-    elif parameter == AREA_PARAMETER:
-
-        if parameterValue < areas[0]:
-            raise QgsProcessingException(
-                errorMessageBelow + str(areas[0])
-                )
-        if parameterValue > areas[-1]:
-            raise QgsProcessingException(
-                errorMessageAbove + str(areas[-1])
-                )
-        
-    elif parameter == VOLUME_PARAMETER:
-
-        if parameterValue < volumes[0]:
-            raise QgsProcessingException(
-                errorMessageBelow + str(volumes[0])
-                )
-        if parameterValue > volumes[-1]:
-            raise QgsProcessingException(
-                errorMessageAbove + str(volumes[-1])
-                )
 def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
     '''
     from the elevation-area-volume data, interpolates the parameter value
@@ -191,6 +120,8 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
 
     if parameter == HEIGHT_PARAMETER:
 
+        verifyIfHeightValueIsInTheCurve(parameterValue,elevations,verticalSpacing)
+
         heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
         heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
 
@@ -201,6 +132,8 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == ELEVATION_PARAMETER:
+
+        verifyIfElevationValueIsInTheCurve(parameterValue,elevations)
 
         heightAreaInterpolation = interp1d(elevations, areas, kind='linear')
         heightVolInterpolation = interp1d(elevations, volumes, kind='linear')
@@ -214,6 +147,8 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
 
     if parameter == AREA_PARAMETER:
 
+        verifyIfAreaValueIsInTheCurve(parameterValue,areas)
+
         areaVolInterpolation = interp1d(areas, volumes, kind='linear')
         areaHeightInterpolation = interp1d(areas, elevations, kind='linear')
 
@@ -224,6 +159,8 @@ def findParameter (dataAHV,parameter,parameterValue,verticalSpacing):
         return waterElevation, waterHeight, waterArea, waterVolume
 
     if parameter == VOLUME_PARAMETER:
+
+        verifyIfVolumeValueIsInTheCurve(parameterValue,volumes)
 
         volAreaInterpolation = interp1d(volumes, areas, kind='linear')
         volHeightInterpolation = interp1d(volumes, elevations, kind='linear')

@@ -35,6 +35,7 @@ from numpy import loadtxt, append, column_stack
 from plotly.graph_objects import Scatter
 from plotly.subplots import make_subplots
 from qgis.core import QgsProcessingException
+from ..exceptions.processingExceptions import verifyNumberOfPointsInCurve
 
 def executePlugin (dem,area,step):
     '''
@@ -69,22 +70,13 @@ def generateHypsometricCurve (dem,area,step):
     path = hypsometricCurve+'/histogram_'+maskName+'_'+str(featureID)+'.csv'
 
     return path
-def verifyNumberOfPointsInCurve (areaHeightCurve):
-    '''
-    Checks whether there are a sufficient number of points
-    on the generated curve for numerical integration
-    '''
-    data = loadtxt(areaHeightCurve, delimiter=',',skiprows=1)
-
-    if len(data) <= 2:
-        raise QgsProcessingException(
-            'Insufficient number of points for the Area-Volume-Elevation curve!'
-        )
 def calculateAreaHeightVolume (areaHeightCurve):
     '''
     integrates the hypsometric curve, generating elevation-area-volume data
     '''
     data = loadtxt(areaHeightCurve, delimiter=',',skiprows=1)
+
+    verifyNumberOfPointsInCurve(data)
 
     xd = data[:, 0].tolist()
     yd = data[:, 1].tolist()
