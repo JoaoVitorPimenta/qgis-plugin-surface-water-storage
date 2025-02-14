@@ -268,7 +268,8 @@ def addAttributes (inundArea, waterElev, waterHeight, waterArea, waterVolume):
         features.setAttribute(areaFieldID, waterArea)
         features.setAttribute(volumeFieldID, waterVolume)
         inundArea.updateFeature(features)
-    inundArea.deleteAttributes([0,1])
+
+    inundArea.deleteAttribute(inundArea.fields().indexOf('DN'))
     inundArea.commitChanges()
 
     return inundArea
