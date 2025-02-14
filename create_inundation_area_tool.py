@@ -202,7 +202,7 @@ class createInundationAreaAlgorithm(QgsProcessingAlgorithm):
                                               context,
                                               inundationArea.fields(),
                                               inundationArea.wkbType(),
-                                              inundationArea.sourceCrs(),
+                                              areaInput.sourceCrs(),
                                               layerOptions=["ENCODING=UTF-8"])
 
         if inundationArea.featureCount():
