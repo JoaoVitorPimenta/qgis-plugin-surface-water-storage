@@ -6,7 +6,7 @@
 name=Surface Water Storage
 qgisMinimumVersion=3.28
 description=This plugin generates the inundation area and elevation-area-volume graph for an area.
-version=0.5
+version=0.6
 author=João Vitor Pimenta
 email=jvpjoaopimenta@gmail.com
 
@@ -21,6 +21,10 @@ repository=https://github.com/JoaoVitorPimenta/qgis-plugin-surface-water-storage
 hasProcessingProvider=yes
 # Uncomment the following line and add your changelog:
 changelog= 
+        0.6
+        -code improvement
+        -fixed the final fields of the output layer in the Inundation Area
+
         0.5
         -code improvements to improve readability and logic
         -fixed the "Area" input type in Inundation Area tool
